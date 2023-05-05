@@ -3,12 +3,8 @@
     <div class="row d-flex justify-content-center mt-5">
       <p class="h1 fw-bold text-center">CukiFTP</p>
     </div>
-    <div class="row d-flex justify-content-center my-5">
-      <vue-dropzone
-        ref="myVueDropzone"
-        id="dropzone"
-        :options="dropzoneOptions"
-      ></vue-dropzone>
+    <div class="row d-flex justify-content-center mb-5">
+      <DragDrop></DragDrop>
     </div>
     <div class="row d-flex justify-content-center">
       <button type="button" class="btn btn-primary">Subir Archivos</button>
@@ -17,8 +13,7 @@
 </template>
 
 <script>
-import vue2Dropzone from "vue2-dropzone";
-import "vue2-dropzone/dist/vue2Dropzone.min.css";
+import DragDrop from "../components/DragDrop.vue";
 
 export default {
   name: "UIFtp",
@@ -35,9 +30,7 @@ export default {
   },
   props: {},
   methods: {},
-  components: {
-    vueDropzone: vue2Dropzone,
-  },
+  components: { DragDrop },
 };
 </script>
 
