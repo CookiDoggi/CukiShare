@@ -34,7 +34,7 @@
           </div>
           <div>
             <button
-              class="btn btn-primary ml-2"
+              class="btn btn-primary btn-sm ml-2"
               type="button"
               @click="remove(files.indexOf(file))"
             >
