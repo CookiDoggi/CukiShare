@@ -11,9 +11,10 @@
         <span class="input-group-text" id="inputGroup-sizing-sm">IP</span>
       </div>
       <input
-        disabled
+        v-model="ip"
+        readonly
         type="text"
-        class="form-control col-6"
+        class="form-control text-center col-6"
         aria-label="Small"
         aria-describedby="inputGroup-sizing-sm"
       />
@@ -29,6 +30,8 @@
 <script>
 const shell = require("shelljs"); //Para iniciar comandos de shell
 const kill = require("tree-kill"); //Para matar procesos padres y hijos
+const ip = require("ip");
+
 import DragDrop from "../components/DragDrop.vue";
 
 export default {
@@ -38,6 +41,7 @@ export default {
     return {
       serverStarted: false,
       serverProcess: undefined,
+      ip: ip.address(),
     };
   },
   props: {},
@@ -47,11 +51,11 @@ export default {
         if (!this.serverStarted) {
           this.startServer();
           this.serverStarted = true;
-          console.log("iniciado");
+          //console.log("iniciado");
         } else {
           this.stopServer();
           this.serverStarted = false;
-          console.log("apagado");
+          //console.log("apagado");
         }
       } catch (error) {
         console.error("Error al iniciar o parar el servidor:\n", error);
