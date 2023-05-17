@@ -4,6 +4,7 @@ import { app, protocol, BrowserWindow } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 const isDevelopment = process.env.NODE_ENV !== 'production'
+const kill = require("tree-kill");
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
@@ -17,8 +18,7 @@ async function createWindow() {
     height: 520,
     minWidth: 480,
     minHeight: 520,
-    maxWidth: 480,
-    maxHeight: 520,
+    
     webPreferences: {
       
       // Use pluginOptions.nodeIntegration, leave this alone
@@ -45,6 +45,7 @@ async function createWindow() {
 app.on('window-all-closed', () => {
   // On macOS it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
+  
   if (process.platform !== 'darwin') {
     app.quit()
   }

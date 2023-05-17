@@ -16,7 +16,7 @@
         class="hidden-input"
         @change="onChange"
         ref="file"
-        accept=".pdf,.jpg,.jpej,.png,.txt"
+        accept=".pdf,.jpg,.jpeg,.png,.txt,.zip,.rar,.ico"
       />
       <label for="fileInput" class="file-label">
         <div v-if="isDragging">Suelta para subir tus archivos.</div>
@@ -60,7 +60,9 @@ export default {
   props: {},
   methods: {
     onChange() {
+      //también envía los archivos al padre
       this.files = [...this.$refs.file.files];
+      this.$emit("recieve-files", this.files);
     },
     dragover(e) {
       e.preventDefault();

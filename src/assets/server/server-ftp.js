@@ -1,3 +1,4 @@
+/*eslint-disable*/
 const express = require('express');
 const serveIndex = require('serve-index');
 const cors = require('cors');
@@ -9,6 +10,7 @@ app.use('/', serveIndex(filesDirectory, {'icons': true}));
 app.use(express.static(filesDirectory));
 app.use(cors());
 
-const port = 3000;
+let port = 2312;
+let server;
 
 server = app.listen(port);
