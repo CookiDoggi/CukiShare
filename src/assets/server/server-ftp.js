@@ -4,7 +4,7 @@ const serveIndex = require('serve-index');
 const cors = require('cors');
 const path = require('path');
 const app = express();
-const filesDirectory = path.join(__dirname, '../../../public/archivos');
+const filesDirectory = path.join(process.cwd(), "public/archivos"); //process.cwd es directorio raíz
 
 app.use('/', serveIndex(filesDirectory, {'icons': true}));
 app.use(express.static(filesDirectory));

@@ -74,7 +74,7 @@ export default {
       }
     },
     uploadFiles(files) {
-      const filesDirectory = path.join(__dirname, "../../../public/archivos");
+      const filesDirectory = path.join(process.cwd(), "public/archivos");
 
       files.forEach((file) => {
         const filePath = path.join(filesDirectory, file.name);
