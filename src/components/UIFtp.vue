@@ -30,12 +30,14 @@
 </template>
 
 <script>
+/* eslint-disable */
 const shell = require("shelljs"); //Para iniciar comandos de shell
 const kill = require("tree-kill"); //Para matar procesos padres y hijos
 const path = require("path");
 const fs = require("fs");
 const os = require("os");
 
+import { file } from "tmp-promise";
 import DragDrop from "../components/DragDrop.vue";
 
 export default {
@@ -46,6 +48,8 @@ export default {
       serverStarted: false,
       serverProcess: undefined,
       ip: this.getExactIP() + ":2312",
+      //filesDirectory: path.join(process.cwd(), "public/archivos"),
+      filesDirectory: path.join(process.cwd(), "public/archivos"),
     };
   },
   props: {},
@@ -64,28 +68,27 @@ export default {
       }
     },
     startServer() {
-      console.log("iniciado");
+      //console.log("iniciado");
       this.serverProcess = shell.exec("npm run server-ftp", { async: true });
     },
     stopServer() {
-      console.log("apagado");
+      //console.log("apagado");
       if (this.serverProcess) {
         kill(this.serverProcess.pid, "SIGINT");
       }
+      this.deleteDirFiles();
     },
     uploadFiles(files) {
-      const filesDirectory = path.join(process.cwd(), "public/archivos");
-
       files.forEach((file) => {
-        const filePath = path.join(filesDirectory, file.name);
+        const filePath = path.join(this.filesDirectory, file.name);
 
         const reader = new FileReader();
 
         reader.onload = function (event) {
-          // Los datos del archivo están en event.target.result como ArrayBuffer
+          // Cuando el reader lee un archivo, guarda la info en un buffer, que abajo, se encarga de escribirlo en la ruta especifica.....
           const data = Buffer.from(event.target.result);
 
-          // Ahora puedes escribir los datos en el sistema de archivos
+          // Aquí se escriben los archivos en la ruta
           fs.writeFile(filePath, data, (err) => {
             if (err) {
               console.error(`Error al escribir el archivo ${file.name}:`, err);
@@ -101,7 +104,19 @@ export default {
         reader.readAsArrayBuffer(file);
       });
     },
-
+    deleteDirFiles() {
+      fs.readdir(this.filesDirectory, (err, files) => {
+        if (err) {
+          console.log("Error en funcion deleteDirFiles: " + err);
+        }
+        files.forEach((file) => {
+          fs.unlink(this.filesDirectory + "/" + file, (err) => {
+            console.log(err);
+          });
+        });
+      });
+    },
+    deleteDragDropFiles() {},
     getExactIP() {
       const interfaces = os.networkInterfaces();
       for (const name of Object.keys(interfaces)) {
