@@ -12,6 +12,7 @@
       <div class="input-group-prepend">
         <span class="input-group-text" id="inputGroup-sizing-sm">IP</span>
       </div>
+
       <input
         v-model="ip"
         readonly
@@ -21,6 +22,7 @@
         aria-describedby="inputGroup-sizing-sm"
       />
     </div>
+
     <div class="row d-flex justify-content-center">
       <button @click="automatedStartStopServer" type="button" class="btn btn-primary">
         {{ actionButton }}
@@ -31,14 +33,14 @@
 
 <script>
 /* eslint-disable */
-const shell = require("shelljs"); //Para iniciar comandos de shell
-const kill = require("tree-kill"); //Para matar procesos padres y hijos
 const path = require("path");
 const fs = require("fs");
 const os = require("os");
 
-import { file } from "tmp-promise";
+//import { file } from "tmp-promise";
 import DragDrop from "../components/DragDrop.vue";
+import serverOn from "../assets/server/server-ftp";
+import { serverOff } from "../assets/server/server-ftp";
 
 export default {
   name: "UIFtp",
@@ -49,7 +51,9 @@ export default {
       serverProcess: undefined,
       ip: this.getExactIP() + ":2312",
       //filesDirectory: path.join(process.cwd(), "public/archivos"),
-      filesDirectory: path.join(process.cwd(), "public/archivos"),
+      filesDirectory: path.join(__dirname, "../../../../../../public/archivos"),
+
+      status: "",
     };
   },
   props: {},
@@ -58,26 +62,29 @@ export default {
       try {
         if (!this.serverStarted) {
           this.startServer();
-          this.serverStarted = true;
         } else {
-          this.stopServer();
-          this.serverStarted = false;
+          this.stopServer;
         }
       } catch (error) {
         console.error("Error al iniciar o parar el servidor:\n", error);
       }
     },
-    startServer() {
-      //console.log("iniciado");
-      this.serverProcess = shell.exec("npm run server-ftp", { async: true });
-    },
-    stopServer() {
-      //console.log("apagado");
-      if (this.serverProcess) {
-        kill(this.serverProcess.pid, "SIGINT");
+
+    async startServer() {
+      this.serverStarted = true;
+      if (this.serverStarted) {
+        serverOn();
       }
-      this.deleteDirFiles();
     },
+
+    async stopServer() {
+      this.serverStarted = false;
+      if (!this.serverStarted) {
+        serverOff();
+        this.deleteDirFiles();
+      }
+    },
+
     uploadFiles(files) {
       files.forEach((file) => {
         const filePath = path.join(this.filesDirectory, file.name);
