@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <div class="d-flex justify-content-between align-items-start">
       <div class="mx-auto">
-        <p class="h1 fw-bold text-center mt-3">CukiFTP</p>
+        <p class="h1 fw-bold text-center mt-3">CukiShare</p>
       </div>
     </div>
     <div class="row justify-content-center mb-2">
@@ -44,16 +44,16 @@ import { serverOff } from "../assets/server/server-ftp";
 
 export default {
   name: "UIFtp",
-  mounted() {},
+  mounted() {
+    console.log(this.userData);
+  },
   data() {
     return {
       serverStarted: false,
       serverProcess: undefined,
       ip: this.getExactIP() + ":2312",
-      //filesDirectory: path.join(process.cwd(), "public/archivos"),
-      filesDirectory: path.join(__dirname, "../../../../../../public/archivos"),
-
-      status: "",
+      filesDirectory: os.tmpdir() + "/archivos",
+      //userData: path.getPath(userData),
     };
   },
   props: {},
@@ -63,7 +63,7 @@ export default {
         if (!this.serverStarted) {
           this.startServer();
         } else {
-          this.stopServer;
+          this.stopServer();
         }
       } catch (error) {
         console.error("Error al iniciar o parar el servidor:\n", error);
