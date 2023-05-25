@@ -44,9 +44,7 @@ import { serverOff } from "../assets/server/server-ftp";
 
 export default {
   name: "UIFtp",
-  mounted() {
-    console.log(this.userData);
-  },
+  mounted() {},
   data() {
     return {
       serverStarted: false,

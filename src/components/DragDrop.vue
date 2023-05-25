@@ -18,14 +18,14 @@
         ref="file"
         accept=".pdf,.jpg,.jpeg,.png,.txt,.zip,.rar,.ico"
       />
-      <label for="fileInput" class="file-label">
+      <label v-if="files.length == 0" for="fileInput" class="file-label">
         <div v-if="isDragging">Suelta para subir tus archivos.</div>
         <div v-else><u>Pulsa</u> o suelta tus archivos aquí.</div>
       </label>
 
       <!-- Mostrar nombres-->
 
-      <div class="preview-container mt-4" v-if="files.length">
+      <div class="preview-container mt-4" v-if="files.length == 1">
         <div v-for="file in files" :key="file.name" class="preview-card">
           <div>
             <p>
